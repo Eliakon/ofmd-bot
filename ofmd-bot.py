@@ -29,15 +29,10 @@ def get_next_scheduled_time():
 @tasks.loop(seconds=1)
 async def send_tuesday_img():
     next_scheduled_time = get_next_scheduled_time()
-    diff = (next_scheduled_time - moment.utcnow()).total_seconds()
-    print(diff)
-
-    if diff < 0:
-        return
- 
+    diff = (next_scheduled_time - moment.utcnow()).total_seconds() 
     await asyncio.sleep(diff)
+    
     channel = [channel for guild in client.guilds for channel in guild.text_channels][0]
-    print(channel)
     embed = discord.Embed()
     embed.set_image(url=TUESDAY_IMG_URL)
     await channel.send(embed=embed)
