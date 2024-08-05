@@ -8,7 +8,7 @@ import moment
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-TUESDAY_IMG_URL = "https://i.ibb.co/Z2zjY10/tuesday.png"
+TUESDAY_IMG_PATH = "tuesday.png"
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -39,9 +39,10 @@ async def send_tuesday_img():
     await asyncio.sleep(diff)
     
     channel = [channel for guild in client.guilds for channel in guild.text_channels][0]
-    embed = discord.Embed()
-    embed.set_image(url=TUESDAY_IMG_URL)
-    await channel.send(embed=embed)
+
+    with open(TUESDAY_IMG_PATH, 'rb') as file:
+        picture = discord.File(file)
+        await channel.send(file=picture)
 
 
 client.run(TOKEN)
